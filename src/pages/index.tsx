@@ -10,6 +10,10 @@ export interface XimalayaItem {
 	id: number
 	trackInfo: {
 		albumId: number
+		/**
+		 * 这个没用，都是空，不知道喜马拉雅搞什么幺蛾子
+		 */
+		albumTitle: string
 		cover: string
 		playPath: string
 		title: string
@@ -46,6 +50,7 @@ export default function Home(
 							<th>cover</th>
 							<th>title</th>
 							<th>play</th>
+							<th>album id</th>
 						
 						</tr>
 						</thead>
@@ -64,6 +69,7 @@ export default function Home(
 										<td><Link href={item.trackInfo.playPath} target={'_blank'}>
 											<IconPlayerPlayFilled className={'text-green-700'}/>
 										</Link></td>
+										<td>{item.trackInfo.albumId}</td>
 									</tr>
 								)
 							})
