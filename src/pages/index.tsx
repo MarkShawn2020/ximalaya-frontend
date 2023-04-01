@@ -1,14 +1,10 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import { GetServerSideProps } from 'next'
-import { backendAPI } from '@/lib/api'
 import Link from 'next/link'
 import { IconPlayerPlayFilled } from '@tabler/icons-react'
 import { ximalayaListData } from '@/config'
 
-
-const inter = Inter({ subsets: ['latin'] })
 
 export interface XimalayaItem {
 	id: number
@@ -21,11 +17,12 @@ export interface XimalayaItem {
 	}
 }
 
-export default function Home({
-	                             // data: ximalayaListData,
-                             }: {
-	// data: XimalayaItem[]
-}) {
+export default function Home(
+	{
+		// data: ximalayaListData,
+	}: {
+		// data: XimalayaItem[]
+	}) {
 	
 	console.log({ ximalayaListData })
 	
