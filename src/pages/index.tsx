@@ -3,6 +3,10 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import { GetServerSideProps } from 'next'
 import { backendAPI } from '@/lib/api'
+import Link from 'next/link'
+import { IconPlayerPlayFilled } from '@tabler/icons-react'
+import { ximalayaListData } from '@/config'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,8 +21,10 @@ export interface XimalayaItem {
 	}
 }
 
-export default function Home({ data: ximalayaListData }: {
-	data: XimalayaItem[]
+export default function Home({
+	                             // data: ximalayaListData,
+                             }: {
+	// data: XimalayaItem[]
 }) {
 	
 	console.log({ ximalayaListData })
@@ -42,7 +48,7 @@ export default function Home({ data: ximalayaListData }: {
 							<th>id</th>
 							<th>cover</th>
 							<th>title</th>
-							<th>play path</th>
+							<th>play</th>
 						
 						</tr>
 						</thead>
@@ -58,7 +64,9 @@ export default function Home({ data: ximalayaListData }: {
 										{/* sample cover: https://imagev2.xmcdn.com/storages/8c34-audiofreeh…e.jpeg!op_type=3&columns=290&rows=290&magick=webp */}
 										<td><Image src={cover} alt={cover} width={64} height={64}/></td>
 										<td>{item.trackInfo.title}</td>
-										<td>{item.trackInfo.playPath}</td>
+										<td><Link href={item.trackInfo.playPath} target={'_blank'}>
+											<IconPlayerPlayFilled className={'text-green-700'}/>
+										</Link></td>
 									</tr>
 								)
 							})
@@ -74,10 +82,10 @@ export default function Home({ data: ximalayaListData }: {
 
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const res = await backendAPI.get('/ximalaya/list')
+	// const res = await backendAPI.get('/ximalaya/list')
 	return {
 		props: {
-			data: res.data,
+			// data: res.data,
 		},
 	}
 }
