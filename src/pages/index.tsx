@@ -1,10 +1,28 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import { GetServerSideProps } from 'next'
+import { backendAPI } from '@/lib/api'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export interface XimalayaItem {
+	id: number
+	trackInfo: {
+		albumId: number
+		cover: string
+		playPath: string
+		title: string
+		updatedTime: number
+	}
+}
+
+export default function Home({ data: ximalayaListData }: {
+	data: XimalayaItem[]
+}) {
+	
+	console.log({ ximalayaListData })
+	
 	return (
 		<>
 			<Head>
@@ -15,43 +33,51 @@ export default function Home() {
 			</Head>
 			
 			<main className={'w-screen h-screen flex justify-center items-center'}>
-				<div className="overflow-x-auto">
-					<table className="table w-full">
+				<div className="overflow-auto w-full h-full">
+					<table className="table table-compact w-full h-full">
 						{/* head */}
 						<thead>
 						<tr>
 							<th></th>
-							<th>Name</th>
-							<th>Job</th>
-							<th>Favorite Color</th>
+							<th>id</th>
+							<th>cover</th>
+							<th>title</th>
+							<th>play path</th>
+						
 						</tr>
 						</thead>
 						<tbody>
-						{/* row 1 */}
-						<tr>
-							<th>1</th>
-							<td>Cy Ganderton</td>
-							<td>Quality Control Specialist</td>
-							<td>Blue</td>
-						</tr>
-						{/* row 2 */}
-						<tr className="hover">
-							<th>2</th>
-							<td>Hart Hagerty</td>
-							<td>Desktop Support Technician</td>
-							<td>Purple</td>
-						</tr>
-						{/* row 3 */}
-						<tr>
-							<th>3</th>
-							<td>Brice Swyre</td>
-							<td>Tax Accountant</td>
-							<td>Red</td>
-						</tr>
+						
+						{
+							ximalayaListData.map((item, index) => {
+								const cover = `https://imagev2.xmcdn.com/${item.trackInfo.cover}`
+								return (
+									<tr key={index}>
+										<th>{index + 1}</th>
+										<td>{item.id}</td>
+										{/* sample cover: https://imagev2.xmcdn.com/storages/8c34-audiofreeh…e.jpeg!op_type=3&columns=290&rows=290&magick=webp */}
+										<td><Image src={cover} alt={cover} width={64} height={64}/></td>
+										<td>{item.trackInfo.title}</td>
+										<td>{item.trackInfo.playPath}</td>
+									</tr>
+								)
+							})
+						}
+						
 						</tbody>
 					</table>
 				</div>
 			</main>
 		</>
 	)
+}
+
+
+export const getServerSideProps: GetServerSideProps = async () => {
+	const res = await backendAPI.get('/ximalaya/list')
+	return {
+		props: {
+			data: res.data,
+		},
+	}
 }
